@@ -64,8 +64,22 @@ public class StepDefs {
         );
     }
 
-    @When("user enters invalid username and password")
-    public void userEntersInvalidUsernameAndPassword(DataTable table) {
+    @When("user enters invalid credentials")
+    public void userEntersInvalidCredentials(DataTable table) {
+        enterCredentials(table);
+    }
+
+    @When("locked user enters correct credentials")
+    public void userEntersCorrectCredentials(DataTable table) {
+        enterCredentials(table);
+    }
+
+    @Then("the error message should be displayed")
+    public void theErrorMessageShouldBeDisplayed(DataTable table) {
+        assertErrorMessage(table);
+    }
+
+    private void enterCredentials(DataTable table) {
         List<Map<String, String>> credentials = table.asMaps(String.class, String.class);
         for (Map<String, String> row : credentials) {
             String username = row.get("username");
@@ -76,8 +90,7 @@ public class StepDefs {
         }
     }
 
-    @Then("the error message should be displayed")
-    public void theErrorMessageShouldBeDisplayed(DataTable table) {
+    private void assertErrorMessage(DataTable table) {
         List<Map<String, String>> credentials = table.asMaps(String.class, String.class);
         for (Map<String, String> row : credentials) {
             String errorMsgExpected = row.get("error");

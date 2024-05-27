@@ -23,12 +23,29 @@ Feature: User Authentication
 
     @InvalidLogin
     Scenario: Login to sauceDemo page with invalid credentials
-      When user enters invalid username and password
-        | username     | password     |
-        | standarduser | secret_sauce |
+      When user enters invalid credentials
+        | username      | password     |
+        | standarduser  | secret_sauce |
+        | standarduser  | secretsauce  |
+        | standard_user | secretsauce  |
       And user clicks on the login button
       Then the error message should be displayed
         | error                                                                     |
         | Epic sadface: Username and password do not match any user in this service |
+
+
+  Rule:Locked out user
+  This rule covers scenarios where the locked out user fails to log in to the application.
+
+    @LockedUser
+    Scenario: Locked out user attempts to login with correct credentials
+      When locked user enters correct credentials
+        | username         | password     |
+        |  locked_out_user | secret_sauce |
+      And user clicks on the login button
+      Then the error message should be displayed
+        | error                                                                     |
+        | Epic sadface: Sorry, this user has been locked out. |
+
 
 
